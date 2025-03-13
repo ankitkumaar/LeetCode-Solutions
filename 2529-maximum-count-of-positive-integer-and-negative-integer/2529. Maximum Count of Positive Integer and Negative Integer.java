@@ -1,16 +1,37 @@
 class Solution {
     public int maximumCount(int[] nums) {
 
-        /* variables to count frequency of positive and negative integers */
-        int countNeg = 0, countPos = 0;
+        /* Compute number of Negative Integers and
+        Number of Positive Integers in nums[] */
+        int numberOfNegativeIntegers = lastNegativeInteger(nums) + 1;
+        int numberOfPositiveIntegers = nums.length - firstPositiveInteger(nums);
+        
+        return Math.max(numberOfNegativeIntegers, numberOfPositiveIntegers);
+    }
 
-        /* Iteration nums[] to count frequency */
-        for(int i=0; i<nums.length; i++) {
-            if(nums[i] < 0)
-                countNeg++;
-            if(nums[i] > 0)
-                countPos++;
+    /* Method to find index of last Negative Integer using Binary Search */
+    private int lastNegativeInteger(int[] nums)   {
+        int low = 0, high = nums.length - 1;
+        while(low <= high)  {
+            int mid = low + (high - low)/2;
+            if(nums[mid] >= 0)
+                high = mid - 1;
+            else
+                low = mid + 1;
         }
-        return Math.max(countNeg, countPos);
+        return high;
+    }
+
+    /* Method to find index of first Positive Integer using Binary Search */
+    private int firstPositiveInteger(int[] nums)   {
+        int low = 0, high = nums.length - 1;
+        while(low <= high)  {
+            int mid = low + (high - low)/2;
+            if(nums[mid] <= 0)
+                low = mid + 1;
+            else
+                high = mid - 1;
+        }
+        return low;
     }
 }
