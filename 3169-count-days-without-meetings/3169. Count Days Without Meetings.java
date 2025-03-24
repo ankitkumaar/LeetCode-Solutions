@@ -24,9 +24,8 @@ class Solution {
             if((startMeeting[i] - endMeeting[i-1] - 1) > 0) 
                 count += startMeeting[i] - endMeeting[i-1] - 1;
         }
-        System.out.println(count);
 
-        /* Edge cases : exect startpoint and endpoint */ 
+        /* Edge cases : For first day and last day */ 
         if(startMeeting[0] != 1)
             count += startMeeting[0] - 1;
         if(endMeeting[meetings.length-1] != days)
