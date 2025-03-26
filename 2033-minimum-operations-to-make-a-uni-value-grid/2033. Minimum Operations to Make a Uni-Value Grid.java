@@ -16,44 +16,23 @@ class Solution {
 
         Arrays.sort(nums);
         int midNum = nums[nums.length / 2];
-
         int count = 0;
-        boolean flag = true;
 
         /* Iterate through the grid again to calculate the operations needed */
         for(int i=0; i<grid.length; i++)   {
             for(int j=0; j<grid[0].length; j++)   {
-                double ans = 0.0;
 
-                /* If the current element is smaller than the median */
-                if(grid[i][j] < midNum)   {
-                    ans = (double)(midNum - grid[i][j]) / x;
-                }
+                /* If difference is not a multiple of x, 
+                transformation is impossible */
+                int diff = Math.abs(midNum - grid[i][j]);
 
-                /* If the current element is greater than the median */
-                else if(grid[i][j] > midNum)   {
-                    ans = (double)(grid[i][j] - midNum) / x;
-                }
+                if(diff % x != 0)   
+                    return -1;
 
-                /* If the element is already equal to the median */
-                else
-                     continue;
-                
-                double ansFloor = Math.floor(ans);
-                double ansCeil = Math.ceil(ans);
-                
-                /* Check if the number of operations is an integer */
-                if(((int)ans == (int)ansCeil) && ((int)ans == (int)ansFloor))   {
-                    count += (int)ans;
-                }
-                else
-                    flag = false;
+                /* Number of operations required for this element */
+                count += diff/x;
             }
         }
-
-        /* If transformation is possible, return the total count of operations
-        Otherwise, return -1 indicating it's not possible */
-        if(flag) return count;
-        return -1;
+        return count;
     }
 }
