@@ -1,35 +1,36 @@
 class Solution {
     public int minimumIndex(List<Integer> nums) {
         
-        /* 'x' stores the dominant element, 'cnt' keeps track of its count
-        HashMap to store the frequency of each element */
-        int x = 0, cnt = 0;
-        Map<Integer, Integer> freq = new HashMap<>();
-        
-        /* First pass: Find the dominant element 
-        (The one that appears most frequently) */
-        for (int v : nums) {
-            int t = freq.merge(v, 1, Integer::sum); 
-            
-            /* Update dominant element if 'v' appears more frequently */
-            if (cnt < t) {
-                cnt = t; x = v;
+        int dom = 0, count = 0, n = nums.size();
+        Map<Integer, Integer> hmap = new HashMap<>();
+
+        /* Count the occurrences of each number in the list */
+        for (int i=0; i<n; i++) {
+            hmap.put(nums.get(i), hmap.getOrDefault(nums.get(i), 0) + 1);
+        }
+
+        /* Identify the dominant element (appears more than n/2 times) */
+        for (Map.Entry<Integer, Integer> hm : hmap.entrySet()) {
+            if (hm.getValue() > n/2) {
+                dom = hm.getKey(); count = hm.getValue();
+                break;
             }
         }
 
-        /* Count of 'x' encountered so far
-        Second pass: Find the minimum index where the array can be split */
-        int cur = 0;
-        for (int i = 1; i <= nums.size(); ++i) {
+        int leftCount = 0;
+        
+        /* Find the minimum index where both partitions satisfy the condition */
+        for (int i=0; i<n-1; i++) {
+            if (nums.get(i) == dom) 
+                leftCount++;
             
-            /* If the current element is the dominant one */
-            if (nums.get(i - 1) == x) {
-                cur++;
-                
-                /* Check if 'x' remains the dominant element 
-                in both halves after the split */
-                if (cur * 2 > i && (cnt - cur) * 2 > nums.size() - i)
-                    return i - 1;
+            int leftSize = i + 1;
+            int rightSize = n - leftSize;
+            int rightCount = count - leftCount;
+
+            /* Check if `dom` is dominant in both left and right partitions */
+            if (leftCount > leftSize / 2 && rightCount > rightSize / 2) {
+                return i;
             }
         }
         return -1;
