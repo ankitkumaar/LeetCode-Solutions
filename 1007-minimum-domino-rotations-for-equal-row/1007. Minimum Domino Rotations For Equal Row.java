@@ -17,16 +17,14 @@ class Solution {
             }
         }
 
-        /* Check if it's possible to make all values 
-        in tops or bottoms equal to num */
-        for (int i = 0; i < tops.length; i++) {
-            if (tops[i] != num && bottoms[i] != num)
-                return -1;
-        }
-
         /* Count the number of rotations needed */
         int count1 = 0, count2 = 0;
         for (int i = 0; i < tops.length; i++) {
+
+            /* Check if both arrays contains different numbers */
+            if (tops[i] != num && bottoms[i] != num)    return -1;
+
+            /* Freq of num from tops ans bottoms */
             if (tops[i] != num)
                 count1++;
             if (bottoms[i] != num)
