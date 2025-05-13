@@ -10,22 +10,20 @@ class Solution {
         for (char ch : s.toCharArray()) {
             freq[ch - 'a']++;
         }
-
+        
         /* Perform the transformation 't' times */
         while (t-- > 0) {
 
-            /* Array to store updated frequencies after transformation */
-            int[] nextNum = new int[26];
-            nextNum[0] = freq[25];
-            nextNum[1] = (freq[25] + freq[0]) % mod;
+            int tempZ = freq[25];
             
             /* For other characters, shift frequency from previous character */
-            for (int i = 2; i < freq.length; i++) {
-                nextNum[i] = freq[i - 1];
+            for (int i = freq.length-1; i >= 2; i--) {
+                freq[i] = freq[i - 1];
             }
 
-            /* Update the frequency array for the next iteration */
-            freq = nextNum;
+            /* Swap updated frequencies after transformation */
+            freq[1] = (freq[0] + tempZ) % mod;
+            freq[0] = tempZ;
         }
 
         /* Sum all frequencies to get the final length 
